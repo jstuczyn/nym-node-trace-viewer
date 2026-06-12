@@ -366,22 +366,28 @@ class TraceViewer(App):
         metrics = [TOTAL_METRIC] if TOTAL_METRIC in self.history else []
         if selected not in metrics:
             metrics.append(selected)
-        width = max(20, panel.size.width - 52)
         mode = "cumulative" if self.cumulative else "window"
+        avail = panel.size.width or 80  # inner content width (border + padding already excluded)
+        label_w, gap = 17, "  "
         body = Text()
         body.append(f"p99 over time ({mode})\n", style="bold")
         for metric in metrics:
             hist = list(self.history.get(metric, []))
             vals = [v for v in hist if v is not None]
-            body.append(f"{STAGE_LABELS.get(metric, metric):<17}", style="cyan")
-            body.append(sparkline(hist, width) + "  ", style="green")
+            label = f"{STAGE_LABELS.get(metric, metric):<{label_w}}"
             if vals:
-                body.append(
+                stats = (
                     f"cur {human_seconds(vals[-1])}  "
                     f"min {human_seconds(min(vals))}  max {human_seconds(max(vals))}  n={len(vals)}"
                 )
             else:
-                body.append("no samples in window", style="dim")
+                stats = "no samples in window"
+            # size the sparkline to whatever's left after the label, joining gap, and the stats,
+            # so the stats stay on one line instead of wrapping
+            width = max(8, avail - label_w - len(gap) - len(stats) - 1)
+            body.append(label, style="cyan")
+            body.append(sparkline(hist, width) + gap, style="green")
+            body.append(stats, style="dim" if not vals else "")
             body.append("\n")
         panel.update(body)
 
