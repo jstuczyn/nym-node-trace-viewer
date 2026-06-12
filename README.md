@@ -4,6 +4,8 @@
 
 Live terminal dashboard for a [nym-node](https://github.com/nymtech/nym)'s mixnet packet-latency stages (the `mixnet_packet_*` prometheus histograms added in #6852).
 
+![trace-viewer TUI](docs/screenshot.png)
+
 It scrapes the node's prometheus endpoint, diffs successive scrapes to show the latency distribution and packet rate for the **recent window** (not the lifetime-since-boot average), and renders a per-stage waterfall: `Unwrap -> ReplayCheck -> ForwarderQueue -> DelayQueue -> EgressQueue -> SocketWrite -> Total`, plus the `DelayQueueOverrun` diagnostic.
 
 ## Setup
