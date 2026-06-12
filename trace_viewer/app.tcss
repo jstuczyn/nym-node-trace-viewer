@@ -1,0 +1,28 @@
+Screen {
+    layout: vertical;
+}
+
+#status {
+    height: auto;
+    padding: 0 1;
+    background: $panel;
+    color: $text;
+}
+
+#waterfall {
+    height: 1fr;
+}
+
+#trend {
+    height: auto;
+    min-height: 4;
+    border: round $secondary;
+    padding: 0 1;
+}
+
+#dist {
+    height: auto;
+    min-height: 13;
+    border: round $primary;
+    padding: 0 1;
+}
